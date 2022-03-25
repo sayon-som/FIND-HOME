@@ -1,6 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import {Link,useNavigate} from 'react-router-dom'
+//sign in functionalities for the user
+import  {signInWithEmailAndPassword,getAuth} from "firebase/auth";
 //importing the Icons
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
 import visibilityIcon from '../assets/svg/visibilityIcon.svg' 
@@ -22,10 +25,29 @@ setformdata((prev)=>(
     ...prev,
     [e.target.id]:e.target.value//adding the id of the user input and does not require any further functionality
   }
-))
-
-
+));
 }
+
+//submit functionlatites
+const Submit=async(e)=>{
+e.preventDefault();
+try{
+  const auth=getAuth();
+  const cred=await signInWithEmailAndPassword(
+    auth,email,password
+  );
+  if(cred.user){
+    navigate("/");
+  }
+  
+  }
+  catch(e){
+    toast.error('User Credentials are wrong')
+  }
+}
+
+
+
   return (
     <>
       <div className="pageContainer">
@@ -35,10 +57,10 @@ setformdata((prev)=>(
           </p>
 
         </header>
-        <form>
+        <form onSubmit={Submit}>
       <input type="email" placeholder="Enter your email" id="email" value={email} className="emailInput" onChange={UserChange}/>
 <div className="passwordInputDiv">
-  <input type={showpassword?'text':'password'} className="passwordInput" placeholder="Enter your password" value={password} onChange={UserChange} />
+  <input type={showpassword?'text':'password'} className="passwordInput" placeholder="Enter your password" id="password" value={password} onChange={UserChange} />
 <image className="showPassword" src={visibilityIcon} alt="show the password" onClick={()=>setshowpassword((prev)=>!prev)}></image>
 </div>
 <Link to="/forgotpassword" className="forgotPasswordLink">forgot password</Link>
