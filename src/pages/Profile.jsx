@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { getAuth, signOut,  } from "firebase/auth";
+//import the toast functionality
+import { toast } from "react-toastify";
+import { getAuth, signOut, updateEmail,  } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { updateDoc} from "firebase/firestore";
+import { updateDoc,doc} from "firebase/firestore";
 import { firestoreDb } from "../firebase.config";
+import { updateProfile } from "firebase/auth";
 const Profile = () => {
   const auth=getAuth();
   
@@ -19,11 +22,28 @@ const [change,setchange]=useState(false);
   const {name,email}=formdata;
 
 const navigate=useNavigate();
- //submittinng the changes functionalities and submitting data into the firestre
+ //submittinng the changes functionalities and submitting data into the firestore
 
- const Submit=()=>{
+ const Submit=async()=>{
    try{
-     if(auth.currentUser.displayName!==)
+     if(auth.currentUser.displayName!==name){
+       //update the dispaly name in firestore
+       await updateProfile(auth.currentUser,{
+         displayName:name,
+
+       })
+       //updating the data in the firestore storage
+       const userRef=doc(firestoreDb,"users",auth.currentUser.uid);
+       await updateDoc(userRef,{
+         name,
+       })
+     }
+   }
+   catch(err){
+     //in case the backend does not work out
+     //in case there is some erorr in the backend functionality
+    console.log(err);
+toast.error('The profile details could not be updated');
    }
  }
 

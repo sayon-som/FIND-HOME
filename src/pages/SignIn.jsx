@@ -7,6 +7,7 @@ import  {signInWithEmailAndPassword,getAuth} from "firebase/auth";
 //importing the Icons
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg';
 import visibilityIcon from '../assets/svg/visibilityIcon.svg' 
+import GoogleOauth from "../components/GoogleOauth";
 const SignIn = () => {
   //state for showing the password functionilty 
   const [showpassword,setshowpassword]=useState(false);
@@ -77,9 +78,12 @@ try{
 </div>
 
         </form>
-        {
-          /*google oauth*/ 
-        }
+        {/* google oauth functionality*/}
+        <GoogleOauth/>
+
+
+
+
         <Link className="registerLink" to='/signup'>Sign Up</Link>
       </div>
     </>

@@ -5,6 +5,7 @@ import Profile from './pages/Profile';
 import ForgotPassword from './pages/ForgotPassword';
 import Offer from './pages/Offer';
 import Navbar from './components/Navbar';
+import PrivateRoute from './components/PrivateRoute';
 import SignIn from './pages/SignIn';
 import {ToastContainer} from 'react-toastify';
  import "react-toastify/dist/ReactToastify.css";
@@ -18,7 +19,10 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/profile" element={<Profile />} />
+          {/*implementing the private route functionality*/ }
+          <Route path="/profile" element={<PrivateRoute />} >
+          <Route path="/profile" element={<Profile/>}/>
+          </Route>
           
         </Routes>
         <Navbar/>
