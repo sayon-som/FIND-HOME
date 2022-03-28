@@ -9,6 +9,7 @@ import PrivateRoute from './components/PrivateRoute';
 import SignIn from './pages/SignIn';
 import {ToastContainer} from 'react-toastify';
  import "react-toastify/dist/ReactToastify.css";
+import Category from "./pages/Category.jsx"
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
           <Route path="/offers" element={<Offer/>} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp/>} />
+          <Route path="/category/:type" element={<Category/>}/>
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           {/*implementing the private route functionality*/ }
           <Route path="/profile" element={<PrivateRoute />} >
