@@ -3,7 +3,8 @@ import { ReactComponent as DeleteIcon } from "../assets/svg/deleteIcon.svg";
 import { Link } from "react-router-dom";
 import bed from "../assets/svg/bedIcon.svg";
 import wash from "../assets/svg/bathtubIcon.svg";
-const ListingItem = ({ list, id }) => {
+
+const ListingItem = ({ list, id,deletef}) => {
   return (
     <li className="categoryListing">
       <Link to={`/category/${list.type}/${id}`} className="categoryListingLink">
@@ -32,6 +33,11 @@ const ListingItem = ({ list, id }) => {
           </div>
         </div>
       </Link>
+      {deletef && (
+        <DeleteIcon className="removeIcon" fill='rgb(231,76,60)' onClick={()=>{
+          deletef(list.id,list.name)
+        }}/>
+      )}
       
     </li>
   );

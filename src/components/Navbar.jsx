@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {ReactComponent as OfferIcon} from "../assets/svg/localOfferIcon.svg"
 import {ReactComponent as ExploreIcon} from "../assets/svg/exploreIcon.svg"
 import {ReactComponent as ProfileIcon} from "../assets/svg/personIcon.svg"
-import Offer from "../pages/Offer";
+
 
 const Navbar = () => {
     //helping the user to navigate
@@ -64,7 +64,7 @@ const Navbar = () => {
                 getpath('/offers') ? "navbarListItemNameActive" : "navbarListItemName"
               }
             >
-              Offer
+              Offers
             </p>
           </li>
         </ul>

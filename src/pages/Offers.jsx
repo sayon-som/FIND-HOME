@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 import {
   collection,
@@ -9,6 +8,8 @@ import {
   where,
   orderBy,
   limit,
+  startAfter
+
 } from "firebase/firestore";
 import { firestoreDb } from "../firebase.config";
 import { toast } from "react-toastify";
@@ -16,11 +17,11 @@ import Spinner from "../components/Spinner";
 
 import ListingItem from "../components/ListingItem";
 
-const Category = () => {
+const Offers = () => {
   //use of the states
   const [listing, setlist] = useState(null);
   const [loading, setloading] = useState(true);
-  const { type } = useParams();
+
 
   //we will use the useEffect hook to fetch the listings from firestore
   useEffect(() => {
@@ -31,13 +32,14 @@ const Category = () => {
         //queryinh the listings
         const q = query(
           list_ref,
-          where("type", "==", type),
-          orderBy("timestamp", "desc"),
+          where('offer', '==', true),
+         
           limit(10)
         );
+        let listing = [];
         //execute the query
         const snap = await getDocs(q);
-        let listing = [];
+        
         //looping throught the snapshot
         snap.forEach((data) => {
           return listing.push({
@@ -53,12 +55,12 @@ const Category = () => {
       }
     };
     fetch_list();
-  }, [type]);
+  },[]);
   return (
     <div className="category">
       <header>
         <p className="pageHeader">
-          {type === "rent" ? "Home for Rent" : "Home for Sale"}
+         Offers
         </p>
       </header>
       {loading ? (
@@ -78,10 +80,10 @@ const Category = () => {
           </main>
         </>
       ) : (
-        <p>No Home for {type}</p>
+        <p>No offers</p>
       )}
     </div>
   );
 };
 
-export default Category;
+export default Offers;

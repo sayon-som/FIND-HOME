@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { updateDoc,doc} from "firebase/firestore";
 import { firestoreDb } from "../firebase.config";
 import { updateProfile } from "firebase/auth";
+import { Link } from "react-router-dom";
+//icons
+import arrow from "../assets/svg/keyboardArrowRightIcon.svg"
+import home from "../assets/svg/homeIcon.svg"
 const Profile = () => {
   const auth=getAuth();
   
@@ -110,7 +114,13 @@ const Logout=()=>{
               />
             </form>
           </div>
+          <Link to="/createlistings" className="createListing">
+            <img src={home} alt="home" />
+            <p>Rent your house or sell it</p>
+            <img src={arrow} alt="right" />
+          </Link>
         </main>
+
       </div>
     </>
   );
