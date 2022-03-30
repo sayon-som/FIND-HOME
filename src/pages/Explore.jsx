@@ -1,6 +1,7 @@
 import React from 'react'
-import rent_cat from "../assets/jpg/rentCategoryImage.jpg"
-import sell_cat from "../assets/jpg/sellCategoryImage.jpg"
+import rent_cat from "../assets/jpg/rent_house.jpg"
+import sell_cat from "../assets/jpg/sell_house.jpg"
+import Slider from '../components/Slider'
 import { Link } from 'react-router-dom'
 const Explore = () => {
   return (
@@ -11,6 +12,8 @@ const Explore = () => {
 
       <main>
         {/* the slider would be present here*/}
+        <Slider/>
+
         <p className="exploreCategoryHeading">Categories</p>
         <div className="exploreCategories">
           <Link to="/category/rent">
