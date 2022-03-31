@@ -13,6 +13,8 @@ import CreateListings from './pages/CreateListings';
 import Category from "./pages/Category.jsx"
 import Listings from './components/Listings';
 import Contact from './pages/Contact';
+import EditListing from './pages/EditListing';
+
 
 function App() {
 
@@ -32,7 +34,8 @@ function App() {
           </Route>
           <Route path="/createlistings" element={<CreateListings />} />
           <Route path="/category/:type/:listingid" element={<Listings />} />
-          <Route path="/contacts/:ownerid" element={<Contact/>}/>
+          <Route path="/contacts/:ownerid" element={<Contact />} />
+          <Route path="/editlistings/:listid" element={<EditListing />} />
         </Routes>
         <Navbar />
       </Router>

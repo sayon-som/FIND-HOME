@@ -1,21 +1,27 @@
 import { useState, useEffect, useRef } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 import {
   getStorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  list,
 } from "firebase/storage";
 import { firestoreDb } from "../firebase.config";
 //to add the listings
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { addDoc, updateDoc,doc,getDoc,collection, serverTimestamp } from "firebase/firestore";
+import { useNavigate,useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import { toast } from "react-toastify";
+
 import { v4 as uuidv4 } from "uuid";
-const CreateListings = () => {
+import { async } from "@firebase/util";
+import { toast } from "react-toastify";
+const EditListing = () => {
   const [ifgeolocation, setgeolocation] = useState(true);
   const [loading, setloading] = useState(false);
+  //current listings
+  const [editlisting,seteditlisting]=useState(null);
   const [data, setData] = useState({
     type: "rent",
     name: "",
@@ -53,11 +59,40 @@ const CreateListings = () => {
   const navigate = useNavigate();
   //for the memory leak error
   const isMounted = useRef(true);
+  //we need the params for the id
+  const params=useParams();
+//checking for users list auth
+
+
+
+  //for the prefilled data in the listing edit form getting the data
+  useEffect(()=>{
+setloading(false);
+const getlisting=async()=>{
+const ref=doc(firestoreDb,'listings',params.listid);
+const snap=await getDoc(ref);
+if(snap.exists()){
+    setloading(false);
+    //filling the prefilled value to the form
+    setData({...snap.data(),address:snap.data().location})
+    seteditlisting(snap.data());
+}
+else{
+    navigate("/");
+    toast.error("Something went wrong");
+}
+
+}
+getlisting();
+  },[params.listid,navigate])
+
+
+
   //submit functionality
   const onSubmit = async (e) => {
     e.preventDefault();
     setloading(true);
-    if (discountedPrice <= regularPrice) {
+    if (discountedPrice >= regularPrice) {
       setloading(false);
       toast.error("Discounted should be less than Regular Price");
       return;
@@ -77,19 +112,13 @@ const CreateListings = () => {
       );
       const new_data = await res.json();
       console.log(new_data);
-      geolocation.lat=new_data.data[0].latitude
-          geolocation.lng=new_data.data[0].longitude
-          location=new_data.data[0].name
-      setData(
-        (prevState) => ({
-          ...prevState,
-          geolocation,
-        }),
-        
-      );
-      
-      
-      
+      geolocation.lat = new_data.data[0].latitude;
+      geolocation.lng = new_data.data[0].longitude;
+      location = new_data.data[0].name;
+      setData((prevState) => ({
+        ...prevState,
+        geolocation,
+      }));
     }
 
     //storing images
@@ -138,8 +167,7 @@ const CreateListings = () => {
       setloading(false);
       toast.error("Cannot Upload Image");
       return;
-    }); 
-    
+    });
 
     //storing the form data
 
@@ -149,18 +177,23 @@ const CreateListings = () => {
       imgUrls,
       timestamp: serverTimestamp(),
     };
-   data_copy.location=address;
+    data_copy.location = address;
     delete data_copy.address;
     delete data_copy.images;
     !data_copy.offer && delete data_copy.discountedPrice;
 
-    //saving to database
+    //updating the changed data  to database
 
-    const doc_ref = await addDoc(collection(firestoreDb, "listings"),data_copy);
+    // const doc_ref = await updateDoc(
+    //   collection(firestoreDb, "listings"),
+    //   data_copy
+    // );
+    const docref=doc(firestoreDb,'listings',params.listid);
+    await updateDoc(docref,data_copy);
 
     setloading(false);
     toast.success("The Listings is added to the Firestore DataBase");
-    navigate(`/category/${data_copy.type}/${doc_ref.id}`);
+    navigate(`/category/${data_copy.type}/${docref.id}`);
   };
 
   //mutate functionality
@@ -435,8 +468,8 @@ const CreateListings = () => {
             multiple
             required
           />
-          <button type="submit" className="primaryButton createListingButton">
-            Create Listing
+          <button type="submit" className="primaryButton editListingButton">
+            Edit Listing
           </button>
         </form>
       </main>
@@ -444,4 +477,4 @@ const CreateListings = () => {
   );
 };
 
-export default CreateListings;
+export default EditListing;

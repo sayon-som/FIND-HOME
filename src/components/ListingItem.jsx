@@ -3,8 +3,10 @@ import { ReactComponent as DeleteIcon } from "../assets/svg/deleteIcon.svg";
 import { Link } from "react-router-dom";
 import bed from "../assets/svg/bedIcon.svg";
 import wash from "../assets/svg/bathtubIcon.svg";
+import {ReactComponent as EditIcon} from "../assets/svg/editIcon.svg";
 
-const ListingItem = ({ list, id,deletef}) => {
+const ListingItem = ({ list, id,deletef,editf}) => {
+  console.log(list.data);
   return (
     <li className="categoryListing">
       <Link to={`/category/${list.type}/${id}`} className="categoryListingLink">
@@ -36,6 +38,16 @@ const ListingItem = ({ list, id,deletef}) => {
       {deletef && (
         <DeleteIcon className="removeIcon" fill='rgb(231,76,60)' onClick={()=>{
           deletef(list.id,list.name)
+        }}/>
+      )}
+      {deletef && (
+        <DeleteIcon className="removeIcon" fill='rgb(231,76,60)' onClick={()=>{
+          deletef(list.id,list.name)
+        }}/>
+      )}
+      {editf && (
+        <EditIcon className="editIcon" onClick={()=>{
+          editf(list.id);
         }}/>
       )}
       
